@@ -1,0 +1,180 @@
+:root {
+    --primary-color: #007bff;
+    --secondary-color: #5a6268;
+    --background-light: #f8f9fa;
+    --background-dark: #343a40;
+    --text-color: #333;
+    --border-color: #ced4da;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--background-light);
+    padding: 20px;
+    color: var(--text-color);
+    margin: 0;
+    min-height: 100vh;
+}
+
+h1 {
+    color: var(--secondary-color);
+    font-weight: 700;
+    margin-bottom: 5px;
+    font-size: 2.2em;
+}
+
+h3 {
+    padding: 12px;
+    margin: 0;
+    background-color: var(--background-dark);
+    color: white;
+    font-size: 1.1em;
+    font-weight: 400;
+}
+
+p.small-text {
+    font-size: 0.85em;
+    margin-top: 15px;
+    color: var(--secondary-color);
+}
+
+.input-area {
+    margin: 30px 0;
+    padding: 25px 40px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    border-top: 5px solid var(--primary-color);
+    display: flex;
+    align-items: flex-start;
+    gap: 30px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.input-area label {
+    font-weight: 400;
+    color: var(--secondary-color);
+    margin-right: 5px;
+}
+
+.input-area input {
+    padding: 10px;
+    width: 200px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+.input-area input:focus {
+    border-color: var(--primary-color);
+    outline: none;
+}
+
+.input-area button {
+    padding: 10px 25px;
+    cursor: pointer;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    transition: background-color 0.3s, transform 0.1s;
+    margin-left: 20px;
+    font-weight: 500;
+}
+
+.input-area button:hover {
+    background-color: #0056b3;
+    transform: translateY(-1px);
+}
+
+/* Recuadros laterales reutilizables */
+.side-box {
+    flex: 0 0 280px;
+    background-color: #f9f9f9;
+    padding: 15px 20px;
+    border-radius: 8px;
+    font-size: 0.85em;
+    line-height: 1.4;
+}
+
+.side-box.details-left {
+    background-color: #f0f8ff;
+    border-left: 4px solid #6f42c1;
+}
+
+.side-box.details-right {
+    border-left: 4px solid var(--primary-color);
+}
+
+.side-box details summary {
+    cursor: pointer;
+    font-weight: 500;
+    color: var(--secondary-color);
+    margin-bottom: 10px;
+}
+
+.graph-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    max-width: 1300px;
+    margin-top: 20px;
+    padding-bottom: 50px;
+}
+
+.graph-box-wrapper {
+    width: 30%;
+    min-width: 350px;
+    margin: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: white;
+    text-align: center;
+    position: relative;
+    transition: transform 0.3s;
+}
+
+.graph-box-wrapper:hover {
+    transform: translateY(-5px);
+}
+
+.graph-box {
+    height: 400px;
+    width: 100%;
+    position: relative;
+}
+
+/* Etiquetas de ejes */
+.label {
+    position: absolute;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    padding: 2px 5px;
+    border-radius: 3px;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+.label.x { background-color: #dc3545; }
+.label.y { background-color: #28a745; }
+.label.z { background-color: #007bff; }
+
+footer {
+    margin-top: 40px;
+    padding: 15px;
+    width: 100%;
+    max-width: 1300px;
+    text-align: center;
+    color: var(--secondary-color);
+    font-size: 0.8em;
+    border-top: 1px solid var(--border-color);
+}

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizador de Sólidos de Revolución (Three.js)</title>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/12.4.0/math.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <script src="solido_revolucion.js" defer></script>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+    <h1>VISUALIZADOR DE SÓLIDOS DE REVOLUCIÓN</h1>
+    <p class="small-text" style="margin-top: -10px; font-style: italic;">Herramienta interactiva de Cálculo Multivariable</p>
+
+    <div class="input-area" style="display: flex; align-items: flex-start; gap: 30px; justify-content: center; flex-wrap: wrap; padding: 25px 40px;">
+    
+        <!-- Cuadro de figuras geométricas -->
+        <div style="flex: 0 0 280px; background-color: #f0f8ff; border-left: 4px solid #6f42c1; padding: 15px 20px; border-radius: 8px; font-size: 0.85em; line-height: 1.4;">
+        <details open>
+            <summary style="cursor: pointer; font-weight: 500; color: var(--secondary-color); margin-bottom: 10px;">
+            🧩 Figuras geométricas
+            </summary>
+            <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+            <thead>
+                <tr style="background-color: var(--background-dark); color: white;">
+                <th style="padding: 4px; border: 1px solid var(--border-color); font-weight: 400;">Figura</th>
+                <th style="padding: 4px; border: 1px solid var(--border-color); font-weight: 400;">Función</th>
+                <th style="padding: 4px; border: 1px solid var(--border-color); font-weight: 400;">A–B</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Semicírculo</td><td><code>sqrt(1 - x^2)</code></td><td>-1 a 1</td></tr>
+                <tr><td>Triángulo</td><td><code>x+1, -x+1</code></td><td>-1 a 1</td></tr>
+                <tr><td>Rectángulo</td><td><code>1*(abs(x)&lt;=1)</code></td><td>-1 a 1</td></tr>
+                <tr><td>Campana</td><td><code>exp(-x^2)</code></td><td>-3 a 3</td></tr>
+                <tr><td>Cono</td><td><code>x</code></td><td>0 a 2</td></tr>
+                <tr><td>Cilindro</td><td><code>1</code></td><td>-1 a 1</td></tr>
+            </tbody>
+            </table>
+            <p class="small-text" style="margin-top: 10px;">
+            Estas funciones generan perfiles geométricos que al girarse forman sólidos como esferas, conos, cilindros y más.
+            </p>
+        </details>
+        </div>
+
+    <!-- Formulario principal -->
+        <div style="flex: 1; min-width: 300px;">
+            <label for="funcion1">Función 1 f(x) = </label>
+            <input type="text" id="funcion1" value="x^2" placeholder="Ej: x^2, sin(x), etc.">
+            <br><br>
+
+            <label for="funcion2">Función 2 f(x) = </label>
+            <input type="text" id="funcion2" value="sin(x)^2" placeholder="Ej: sin(x)^2, log(x), etc.">      
+            <br><br>
+
+            <label for="limiteA">Límite Inferior (A):</label>
+            <input type="number" id="limiteA" value="-1" step="any" style="width: 80px; margin-right: 20px;">
+
+            <label for="limiteB">Límite Superior (B):</label>
+            <input type="number" id="limiteB" value="2.5" step="any" style="width: 80px;">
+            <br><br>
+
+            <button onclick="graficarTodo()">GRAFICAR</button>
+            <button onclick="limpiarTodo()">LIMPIAR</button>
+
+            <p class="small-text" style="margin-top: 15px;">*Usa <code>x</code> como variable. Los límites A y B definen el intervalo [A, B].</p>
+        </div>
+
+    <!-- Cuadro de ejemplos -->
+        <div style="flex: 0 0 280px; background-color: #f9f9f9; border-left: 4px solid var(--primary-color); padding: 15px 20px; border-radius: 8px; font-size: 0.85em; line-height: 1.4;">
+            <details open>
+            <summary style="cursor: pointer; font-weight: 500; color: var(--secondary-color); margin-bottom: 10px;">
+                📘 Ejemplos de funciones válidas
+            </summary>
+            <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+                <thead>
+                <tr style="background-color: var(--background-dark); color: white;">
+                    <th style="padding: 4px; border: 1px solid var(--border-color); font-weight: 400;">Función</th>
+                    <th style="padding: 4px; border: 1px solid var(--border-color); font-weight: 400;">A</th>
+                    <th style="padding: 4px; border: 1px solid var(--border-color); font-weight: 400;">B</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr><td><code>3+2x-x^2</code></td><td>0</td><td>3</td></tr>
+                <tr><td><code>x*(x+1)</code></td><td>-2</td><td>1</td></tr>
+                <tr><td><code>2x^3 + 4x</code></td><td>-1</td><td>1</td></tr>
+                <tr><td><code>sin(x)^2 + log(x)</code></td><td>0.5</td><td>6</td></tr>
+                <tr><td><code>abs(x)</code></td><td>-5</td><td>5</td></tr>
+                <tr><td><code>sqrt(x)</code></td><td>0</td><td>6</td></tr>
+                </tbody>
+            </table>
+            <p class="small-text" style="margin-top: 10px;">
+                Puedes usar funciones como <code>sin(x)</code>, <code>cos(x)</code>, <code>tan(x)</code>, <code>log(x)</code>, <code>sqrt(x)</code>, <code>abs(x)</code>, <code>exp(x)</code>, y combinaciones con paréntesis y potencias usando <code>^</code>.
+            </p>
+            </details>
+        </div>
+
+    </div>
+
+        <div class="graph-container">
+            <div class="graph-box-wrapper" id="wrapper2D">
+                <h3>PLANO 2D (CURVA ORIGINAL)</h3>
+                <div id="graph2D" class="graph-box"></div>
+            </div>
+            <div class="graph-box-wrapper" id="wrapper3DX">
+                <h3>GIRO SOBRE EJE X (DISCO)</h3>
+                <div id="graph3DX" class="graph-box"></div>
+            </div>
+            <div class="graph-box-wrapper" id="wrapper3DY">
+                <h3>GIRO SOBRE EJE Y (CASCARONES)</h3>
+                <div id="graph3DY" class="graph-box"></div>
+            </div>
+        </div>
+
+    <footer>
+        <p>Página creada por Mauricio Brown Naranjo. Todos los derechos reservados &copy; 2025.</p>
+    </footer>
+
+</body>
+</html>
